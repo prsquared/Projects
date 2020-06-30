@@ -4,7 +4,7 @@ import tictactoe.entity.Coordinate;
 import tictactoe.entity.Symbol;
 import tictactoe.enums.PlayerType;
 import tictactoe.enums.ValidationStatus;
-import tictactoe.entity.Player.interfaces.IPlayer;
+import tictactoe.interfaces.IPlayer;
 
 import java.util.Random;
 

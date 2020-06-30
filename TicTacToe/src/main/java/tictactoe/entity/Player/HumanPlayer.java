@@ -1,10 +1,10 @@
 package tictactoe.entity.Player;
 
 import tictactoe.entity.Coordinate;
-import tictactoe.entity.Player.interfaces.IPlayer;
 import tictactoe.entity.Symbol;
 import tictactoe.enums.PlayerType;
 import tictactoe.enums.ValidationStatus;
+import tictactoe.interfaces.IPlayer;
 
 import java.util.Scanner;
 
