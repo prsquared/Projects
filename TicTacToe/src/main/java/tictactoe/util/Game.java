@@ -1,20 +1,21 @@
 package tictactoe.util;
 
-import tictactoe.entity.Board;
 import tictactoe.entity.Coordinate;
-import tictactoe.entity.Player.EasyAI;
-import tictactoe.entity.Player.HumanPlayer;
-import tictactoe.entity.Player.MediumAI;
 import tictactoe.entity.Square;
 import tictactoe.entity.Symbol;
 import tictactoe.enums.GameStatus;
 import tictactoe.enums.ValidationStatus;
 import tictactoe.interfaces.IPlayer;
+import tictactoe.service.Board;
+import tictactoe.service.Player.EasyAI;
+import tictactoe.service.Player.HardAI;
+import tictactoe.service.Player.HumanPlayer;
+import tictactoe.service.Player.MediumAI;
 
 import java.util.Scanner;
 
 public class Game {
-    private final Board board = new Board();
+    private Board board = new Board();
     private final IPlayer[] players = new IPlayer[2];
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -36,12 +37,14 @@ public class Game {
         } while (!"exit".equals(input));
     }
 
-    private void initializePlayers(String[] inputs) {
+    public void initializePlayers(String[] inputs) {
         for (int i = 1; i < 3; i++) {
             if ("user".equals(inputs[i])) {
                 players[i - 1] = new HumanPlayer(getSymbol(i));
             } else if ("medium".equals(inputs[i])) {
                 players[i - 1] = new MediumAI(getSymbol(i), board);
+            } else if ("hard".equals(inputs[i])) {
+                players[i - 1] = new HardAI(getSymbol(i), board);
             } else {
                 players[i - 1] = new EasyAI(getSymbol(i));
             }
@@ -63,7 +66,8 @@ public class Game {
             return false;
         }
         for (int i = 1; i < 3; i++) {
-            if (!"easy".equals(inputs[i]) && !"user".equals(inputs[i]) && !"medium".equals(inputs[i])) {
+            if (!"easy".equals(inputs[i]) && !"user".equals(inputs[i])
+                    && !"medium".equals(inputs[i])  && !"hard".equals(inputs[i])) {
                 return false;
             }
         }
@@ -95,5 +99,30 @@ public class Game {
         } while (true);
     }
 
-
+    public GameStatus simulateGame() {
+        boolean isXMove = true;
+        board.display();
+        IPlayer player;
+        do {
+            player = isXMove ? players[0] : players[1];
+            Coordinate coordinate = player.getMove();
+            ValidationStatus validationStatus = board.getSquareValidity(coordinate);
+            if (!validationStatus.isValid()) {
+                player.onInvalidCoordinate(validationStatus);
+                continue;
+            }
+            Square square = new Square(coordinate);
+            board.placeSymbol(square, player.getSymbol());
+            GameStatus status = board.getStatus();
+            board.display();
+            if (status.equals(GameStatus.X_WINS) || status.equals(GameStatus.O_WINS)
+                    || status.equals(GameStatus.DRAW)) {
+                return status;
+            }
+            isXMove = !isXMove;
+        } while (true);
+    }
+    public void setBoard(Board board){
+        this.board = board;
+    }
 }

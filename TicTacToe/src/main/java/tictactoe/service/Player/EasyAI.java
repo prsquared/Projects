@@ -1,4 +1,4 @@
-package tictactoe.entity.Player;
+package tictactoe.service.Player;
 
 import tictactoe.entity.Coordinate;
 import tictactoe.entity.Symbol;

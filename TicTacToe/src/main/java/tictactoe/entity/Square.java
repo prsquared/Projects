@@ -11,6 +11,12 @@ public class Square {
         this.point = new Coordinate(x,y);
     }
 
+    public Square(int x, int y, char symbol) {
+        this.symbol = new Symbol(symbol);
+        this.occupied = false;
+        this.point = new Coordinate(x,y);
+    }
+
     public Square(Coordinate coordinate) {
         this.symbol = new Symbol('_');
         this.occupied = false;
@@ -43,5 +49,12 @@ public class Square {
     public void addSymbol(Symbol symbol){
         setSymbol(symbol);
         setOccupied(true);
+    }
+    public void testSymbol(Symbol symbol){
+        setSymbol(symbol);
+    }
+    public void testSymbol(char sChar){
+        Symbol symbol = new Symbol(sChar);
+        setSymbol(symbol);
     }
 }
